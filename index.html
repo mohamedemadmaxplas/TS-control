@@ -3,13 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TS DevCloud Pro - لوحة تحكم متقدمة</title>
+    <title>TS DevCloud - لوحة تحكم المطور</title>
+    
+    <!-- الخطوط والأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <!-- Chart.js للإحصائيات -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
     <style>
+        /* ============================================ */
+        /* الإعدادات العامة والتنسيقات الأساسية          */
+        /* ============================================ */
+        
         * {
             margin: 0;
             padding: 0;
@@ -23,7 +34,10 @@
             overflow-x: hidden;
         }
 
-        /* ========== Login Page ========== */
+        /* ============================================ */
+        /* شاشة تسجيل الدخول                             */
+        /* ============================================ */
+        
         .login-container {
             display: flex;
             justify-content: center;
@@ -34,51 +48,27 @@
             overflow: hidden;
         }
 
-        .login-container::before {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(168,85,247,0.3) 0%, transparent 70%);
-            top: -150px;
-            right: -150px;
-            border-radius: 50%;
-            animation: float 10s ease-in-out infinite;
-        }
-
-        .login-container::after {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%);
-            bottom: -200px;
-            left: -200px;
-            border-radius: 50%;
-            animation: float 15s ease-in-out infinite reverse;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(20px, 20px); }
-        }
-
         .login-card {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
             border-radius: 32px;
             padding: 45px;
             width: 100%;
             max-width: 450px;
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             animation: fadeInUp 0.6s ease;
+            z-index: 1;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .login-card h2 {
@@ -101,7 +91,10 @@
             margin-bottom: 35px;
         }
 
-        /* ========== Form Styles ========== */
+        /* ============================================ */
+        /* الحقول والنماذج                               */
+        /* ============================================ */
+        
         .form-group {
             margin-bottom: 22px;
         }
@@ -114,21 +107,11 @@
             font-size: 14px;
         }
 
-        .password-wrapper {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .password-wrapper input {
-            flex: 1;
-        }
-
         .form-control {
             width: 100%;
             padding: 12px 16px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 14px;
             color: white;
             font-family: 'Cairo', sans-serif;
@@ -138,18 +121,24 @@
         .form-control:focus {
             outline: none;
             border-color: #a855f7;
-            box-shadow: 0 0 0 3px rgba(168,85,247,0.2);
-            transform: translateY(-2px);
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
         }
 
-        /* ========== Button Styles with Effects ========== */
+        select.form-control option {
+            background: #1e1b4b;
+        }
+
+        /* ============================================ */
+        /* الأزرار والتأثيرات                            */
+        /* ============================================ */
+        
         .btn {
             padding: 12px 24px;
             border: none;
             border-radius: 14px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             font-family: 'Cairo', sans-serif;
             display: inline-flex;
             align-items: center;
@@ -167,7 +156,7 @@
             width: 0;
             height: 0;
             border-radius: 50%;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.3);
             transform: translate(-50%, -50%);
             transition: width 0.6s, height 0.6s;
         }
@@ -209,53 +198,41 @@
 
         .btn-outline {
             background: transparent;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
         }
 
         .btn-outline:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-color: #a855f7;
         }
 
-        .toggle-password {
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 12px 16px;
-            border-radius: 14px;
-            cursor: pointer;
-            color: white;
-            transition: all 0.3s;
-        }
-
-        .toggle-password:hover {
-            background: rgba(255,255,255,0.2);
-            transform: scale(1.05);
-        }
-
-        /* ========== Dashboard Layout ========== */
+        /* ============================================ */
+        /* تنسيق لوحة التحكم الرئيسية                    */
+        /* ============================================ */
+        
         .dashboard-container {
             display: flex;
             min-height: 100vh;
         }
 
-        /* Sidebar */
+        /* الشريط الجانبي */
         .sidebar {
             width: 280px;
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(255,255,255,0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             z-index: 100;
         }
 
         .sidebar-header {
             padding: 25px;
             text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .sidebar-header h3 {
@@ -316,21 +293,22 @@
             width: 100%;
         }
 
-        .nav-link:hover, .nav-link.active {
+        .nav-link:hover,
+        .nav-link.active {
             color: white;
             transform: translateX(-5px);
         }
 
-        /* Main Content */
+        /* المحتوى الرئيسي */
         .main-content {
             flex: 1;
             margin-right: 280px;
             padding: 20px;
         }
 
-        /* Top Bar */
+        /* الشريط العلوي */
         .top-bar {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 15px 25px;
@@ -340,12 +318,6 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
-            animation: slideDown 0.5s ease;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .page-title {
@@ -357,7 +329,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             padding: 8px 20px;
             border-radius: 40px;
         }
@@ -368,7 +340,7 @@
         }
 
         .logout-btn {
-            background: rgba(239,68,68,0.2);
+            background: rgba(239, 68, 68, 0.2);
             border: none;
             padding: 8px 16px;
             border-radius: 30px;
@@ -378,40 +350,14 @@
         }
 
         .logout-btn:hover {
-            background: rgba(239,68,68,0.4);
+            background: rgba(239, 68, 68, 0.4);
             transform: scale(1.05);
         }
 
-        /* Content Cards */
-        .content-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 25px;
-            border: 1px solid rgba(255,255,255,0.1);
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .card-header h3 {
-            color: white;
-            font-size: 18px;
-        }
-
-        /* Stats Grid */
+        /* ============================================ */
+        /* البطاقات الإحصائية                            */
+        /* ============================================ */
+        
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -420,7 +366,7 @@
         }
 
         .stat-card {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             padding: 25px;
             text-align: center;
@@ -430,7 +376,7 @@
 
         .stat-card:hover {
             transform: translateY(-8px);
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .stat-value {
@@ -448,7 +394,46 @@
             margin-top: 8px;
         }
 
-        /* Tables */
+        /* ============================================ */
+        /* بطاقات المحتوى                                */
+        /* ============================================ */
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .card-header h3 {
+            color: white;
+            font-size: 18px;
+        }
+
+        /* ============================================ */
+        /* الجداول                                       */
+        /* ============================================ */
+        
         .table-responsive {
             overflow-x: auto;
         }
@@ -461,12 +446,12 @@
         th, td {
             padding: 14px 12px;
             text-align: right;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             color: #e2e8f0;
         }
 
         th {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             font-weight: 600;
         }
 
@@ -475,27 +460,45 @@
         }
 
         tr:hover {
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.03);
         }
 
+        /* ============================================ */
+        /* حالة الأجهزة (باجات)                          */
+        /* ============================================ */
+        
         .status-badge {
             display: inline-block;
             padding: 5px 14px;
             border-radius: 30px;
             font-size: 12px;
             font-weight: 500;
-            animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+        .status-active {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
         }
 
-        .status-active { background: rgba(16,185,129,0.2); color: #10b981; }
-        .status-suspended { background: rgba(245,158,11,0.2); color: #f59e0b; }
-        .status-deleted { background: rgba(239,68,68,0.2); color: #ef4444; }
+        .status-suspended {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
 
+        .status-deleted {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .status-pending {
+            background: rgba(100, 116, 139, 0.2);
+            color: #94a3b8;
+        }
+
+        /* ============================================ */
+        /* عرض الكود                                    */
+        /* ============================================ */
+        
         .code-display {
             background: #0f0c29;
             padding: 18px;
@@ -504,10 +507,13 @@
             font-size: 14px;
             color: #10b981;
             word-break: break-all;
-            border: 1px solid rgba(16,185,129,0.3);
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
-        /* Toast Notification */
+        /* ============================================ */
+        /* إشعارات Toast                                */
+        /* ============================================ */
+        
         .toast-container {
             position: fixed;
             bottom: 30px;
@@ -524,22 +530,42 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             animation: slideInRight 0.3s ease;
             border-right: 4px solid;
         }
 
-        .toast.success { border-right-color: #10b981; }
-        .toast.error { border-right-color: #ef4444; }
-        .toast.warning { border-right-color: #f59e0b; }
-        .toast.info { border-right-color: #3b82f6; }
-
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        .toast.success {
+            border-right-color: #10b981;
         }
 
-        /* Modal */
+        .toast.error {
+            border-right-color: #ef4444;
+        }
+
+        .toast.warning {
+            border-right-color: #f59e0b;
+        }
+
+        .toast.info {
+            border-right-color: #3b82f6;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ============================================ */
+        /* النوافذ المنبثقة (مودال)                      */
+        /* ============================================ */
+        
         .modal {
             display: none;
             position: fixed;
@@ -547,12 +573,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            animation: fadeIn 0.3s ease;
         }
 
         .modal-content {
@@ -563,13 +588,19 @@
             width: 90%;
             max-height: 85vh;
             overflow-y: auto;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         @keyframes modalPop {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .modal-header {
@@ -585,7 +616,7 @@
         }
 
         .modal-close {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border: none;
             color: #94a3b8;
             font-size: 20px;
@@ -597,12 +628,15 @@
         }
 
         .modal-close:hover {
-            background: rgba(239,68,68,0.3);
+            background: rgba(239, 68, 68, 0.3);
             color: #ef4444;
             transform: rotate(90deg);
         }
 
-        /* Charts */
+        /* ============================================ */
+        /* الرسوم البيانية                               */
+        /* ============================================ */
+        
         .charts-row {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -611,7 +645,7 @@
         }
 
         .chart-card {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
             padding: 20px;
         }
@@ -620,162 +654,476 @@
             max-height: 250px;
         }
 
-        /* Responsive */
+        /* ============================================ */
+        /* الحقول المخفية                               */
+        /* ============================================ */
+        
+        .hidden {
+            display: none;
+        }
+
+        /* ============================================ */
+        /* التوافق مع الشاشات الصغيرة                    */
+        /* ============================================ */
+        
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(100%);
                 position: fixed;
                 z-index: 200;
             }
+            
             .sidebar.open {
                 transform: translateX(0);
             }
+            
             .main-content {
                 margin-right: 0;
             }
+            
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
         }
-
-        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <!-- Toast Container -->
+
+    <!-- ============================================ -->
+    <!-- حاوية الإشعارات                               -->
+    <!-- ============================================ -->
+    
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Login Page -->
+    <!-- ============================================ -->
+    <!-- صفحة تسجيل الدخول                             -->
+    <!-- ============================================ -->
+    
     <div id="loginPage" class="login-container">
         <div class="login-card">
             <h2>⚡ TS <span>DevCloud Pro</span></h2>
             <p>لوحة تحكم المطورين المتقدمة</p>
+            
             <div class="form-group">
                 <label>👤 اسم المستخدم</label>
                 <input type="text" class="form-control" id="loginUsername" placeholder="أدخل اسم المستخدم">
             </div>
+            
             <div class="form-group">
                 <label>🔒 كلمة المرور</label>
-                <div class="password-wrapper">
-                    <input type="password" class="form-control" id="loginPassword" placeholder="أدخل كلمة المرور">
-                    <button class="toggle-password" onclick="togglePassword('loginPassword', this)"><i class="fas fa-eye"></i></button>
-                </div>
+                <input type="password" class="form-control" id="loginPassword" placeholder="أدخل كلمة المرور">
             </div>
-            <button class="btn btn-primary" onclick="handleLogin()" style="width:100%"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</button>
+            
+            <button class="btn btn-primary" onclick="handleLogin()" style="width: 100%;">
+                <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+            </button>
         </div>
     </div>
 
-    <!-- Dashboard -->
+    <!-- ============================================ -->
+    <!-- لوحة التحكم الرئيسية                           -->
+    <!-- ============================================ -->
+    
     <div id="dashboard" class="dashboard-container hidden">
+        
+        <!-- الشريط الجانبي -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h3>TS <span>DevCloud</span></h3>
                 <p>منصة التحكم المتقدمة</p>
             </div>
+            
             <ul class="nav-menu">
-                <li class="nav-item"><a class="nav-link active" onclick="showPage('dashboardPage')"><i class="fas fa-tachometer-alt"></i> الرئيسية</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('createPage')"><i class="fas fa-plus-circle"></i> إنشاء برنامج</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('softwarePage')"><i class="fas fa-cubes"></i> البرامج</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('devicesPage')"><i class="fas fa-microchip"></i> الأجهزة</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('reportsPage')"><i class="fas fa-chart-line"></i> التقارير</a></li>
-                <li class="nav-item"><a class="nav-link" onclick="showPage('settingsPage')"><i class="fas fa-cog"></i> الإعدادات</a></li>
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="showPage('dashboardPage')">
+                        <i class="fas fa-tachometer-alt"></i> الرئيسية
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showPage('createPage')">
+                        <i class="fas fa-plus-circle"></i> إنشاء برنامج
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showPage('softwarePage')">
+                        <i class="fas fa-cubes"></i> البرامج
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showPage('devicesPage')">
+                        <i class="fas fa-microchip"></i> الأجهزة
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showPage('reportsPage')">
+                        <i class="fas fa-chart-line"></i> التقارير
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showPage('settingsPage')">
+                        <i class="fas fa-cog"></i> الإعدادات
+                    </a>
+                </li>
             </ul>
         </div>
 
+        <!-- المحتوى الرئيسي -->
         <div class="main-content">
+            
+            <!-- الشريط العلوي -->
             <div class="top-bar">
                 <h1 class="page-title" id="pageTitle">الرئيسية</h1>
                 <div class="user-info">
                     <i class="fas fa-user-shield"></i>
                     <span id="currentUser">tecnoshark</span>
-                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> خروج
+                    </button>
                 </div>
             </div>
 
-            <!-- Dashboard Page -->
+            <!-- ============================================ -->
+            <!-- صفحة الرئيسية (Dashboard)                     -->
+            <!-- ============================================ -->
+            
             <div id="dashboardPage">
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-value" id="statSoftware">0</div><div class="stat-label">البرامج</div></div>
-                    <div class="stat-card"><div class="stat-value" id="statDevices">0</div><div class="stat-label">الأجهزة</div></div>
-                    <div class="stat-card"><div class="stat-value" id="statActive">0</div><div class="stat-label">نشطة</div></div>
-                    <div class="stat-card"><div class="stat-value" id="statSuspended">0</div><div class="stat-label">موقوفة</div></div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statSoftware">0</div>
+                        <div class="stat-label">البرامج</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statDevices">0</div>
+                        <div class="stat-label">الأجهزة</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statActive">0</div>
+                        <div class="stat-label">نشطة</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statSuspended">0</div>
+                        <div class="stat-label">موقوفة</div>
+                    </div>
                 </div>
+                
                 <div class="charts-row">
-                    <div class="chart-card"><canvas id="statusChart"></canvas></div>
-                    <div class="chart-card"><canvas id="activityChart"></canvas></div>
+                    <div class="chart-card">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <canvas id="activityChart"></canvas>
+                    </div>
                 </div>
             </div>
 
-            <!-- Create Page -->
+            <!-- ============================================ -->
+            <!-- صفحة إنشاء برنامج جديد                        -->
+            <!-- ============================================ -->
+            
             <div id="createPage" class="hidden">
                 <div class="content-card">
-                    <div class="card-header"><h3><i class="fas fa-plus-circle"></i> إنشاء برنامج جديد</h3></div>
+                    <div class="card-header">
+                        <h3><i class="fas fa-plus-circle"></i> إنشاء برنامج جديد</h3>
+                    </div>
+                    
                     <div style="max-width: 550px;">
-                        <div class="form-group"><label>🏷️ اسم البرنامج</label><input type="text" class="form-control" id="softwareName" placeholder="مثال: TS POS"></div>
-                        <div class="form-group"><label>📝 وصف البرنامج</label><textarea class="form-control" id="softwareDesc" rows="3" placeholder="وصف البرنامج"></textarea></div>
-                        <div class="form-group"><label>👤 اسم العميل</label><input type="text" class="form-control" id="clientName" placeholder="اسم العميل أو الشركة"></div>
-                        <div class="form-group"><label>🖥️ معرف الجهاز (Device ID)</label><input type="text" class="form-control" id="deviceIdInput" placeholder="أدخل Device ID الخاص بالجهاز"></div>
-                        <div class="form-group"><label>⏰ صلاحية التفعيل (أيام)</label><input type="number" class="form-control" id="expiryDays" placeholder="اتركه فارغاً لتفعيل دائم" value="365"></div>
-                        <button class="btn btn-primary" onclick="createSoftware()" style="width:100%"><i class="fas fa-key"></i> إنشاء وتوليد كود التفعيل</button>
+                        <!-- اسم البرنامج -->
+                        <div class="form-group">
+                            <label>🏷️ اسم البرنامج</label>
+                            <input type="text" class="form-control" id="softwareName" placeholder="مثال: TS POS, برنامج المحاسبة">
+                        </div>
+                        
+                        <!-- وصف البرنامج -->
+                        <div class="form-group">
+                            <label>📝 وصف البرنامج</label>
+                            <textarea class="form-control" id="softwareDesc" rows="3" placeholder="وصف مختصر للبرنامج"></textarea>
+                        </div>
+                        
+                        <!-- اسم العميل -->
+                        <div class="form-group">
+                            <label>👤 اسم العميل</label>
+                            <input type="text" class="form-control" id="clientName" placeholder="اسم العميل أو الشركة">
+                        </div>
+                        
+                        <!-- نوع الاشتراك -->
+                        <div class="form-group">
+                            <label>📅 نوع الاشتراك</label>
+                            <select class="form-control" id="subscriptionType" onchange="toggleExpiryField()">
+                                <option value="permanent">♾️ دائم (مدى الحياة)</option>
+                                <option value="temporary">⏰ مؤقت (اشتراك لفترة محددة)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- حقل المدة (يظهر فقط عند اختيار مؤقت) -->
+                        <div class="form-group" id="expiryField" style="display: none;">
+                            <label>⏰ مدة الاشتراك (بالأيام)</label>
+                            <input type="number" class="form-control" id="expiryDays" placeholder="مثال: 30, 90, 365" value="30">
+                            <small style="color: #94a3b8;">💡 بعد انتهاء المدة، يحتاج العميل إلى تجديد الاشتراك</small>
+                        </div>
+                        
+                        <!-- معرف الجهاز (اختياري) -->
+                        <div class="form-group">
+                            <label>🖥️ معرف الجهاز (Device ID) - اختياري</label>
+                            <input type="text" class="form-control" id="deviceIdInput" placeholder="أدخل Device ID لتفعيل فوري">
+                            <small style="color: #94a3b8;">💡 اتركه فارغاً لتوليد كود عام، أو أدخل Device ID معين للتفعيل المباشر</small>
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="createSoftware()" style="width: 100%;">
+                            <i class="fas fa-key"></i> إنشاء وتوليد كود التفعيل
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Software Page -->
+            <!-- ============================================ -->
+            <!-- صفحة عرض البرامج                              -->
+            <!-- ============================================ -->
+            
             <div id="softwarePage" class="hidden">
                 <div class="content-card">
-                    <div class="card-header"><h3><i class="fas fa-cubes"></i> قائمة البرامج</h3><input type="text" class="form-control" id="searchSoftware" placeholder="🔍 بحث" style="width:200px" oninput="renderSoftware()"></div>
-                    <div class="table-responsive"><table id="softwareTable"><thead><tr><th>البرنامج</th><th>العميل</th><th>مفتاح الترخيص</th><th>الأجهزة</th><th>التاريخ</th><th>الإجراءات</th></tr></thead><tbody id="softwareList"></tbody></table></div>
-                </div>
-            </div>
-
-            <!-- Devices Page -->
-            <div id="devicesPage" class="hidden">
-                <div class="content-card">
-                    <div class="card-header"><h3><i class="fas fa-microchip"></i> الأجهزة</h3><input type="text" class="form-control" id="searchDevice" placeholder="🔍 بحث" style="width:200px" oninput="renderDevices()"></div>
-                    <div class="table-responsive"><table><thead><tr><th>معرف الجهاز</th><th>البرنامج</th><th>العميل</th><th>الحالة</th><th>الصلاحية</th><th>الإجراءات</th></tr></thead><tbody id="devicesList"></tbody></table></div>
-                </div>
-            </div>
-
-            <!-- Reports Page -->
-            <div id="reportsPage" class="hidden">
-                <div class="content-card">
-                    <div class="card-header"><h3><i class="fas fa-chart-line"></i> التقارير والإحصائيات</h3></div>
-                    <div class="stats-grid">
-                        <div class="stat-card"><div class="stat-value" id="reportTotalSoftware">0</div><div class="stat-label">إجمالي البرامج</div></div>
-                        <div class="stat-card"><div class="stat-value" id="reportTotalDevices">0</div><div class="stat-label">إجمالي الأجهزة</div></div>
-                        <div class="stat-card"><div class="stat-value" id="reportActiveRate">0%</div><div class="stat-label">نسبة النشاط</div></div>
+                    <div class="card-header">
+                        <h3><i class="fas fa-cubes"></i> قائمة البرامج</h3>
+                        <input type="text" class="form-control" id="searchSoftware" placeholder="🔍 بحث" style="width: 200px;" oninput="renderSoftware()">
                     </div>
-                    <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap;">
-                        <button class="btn btn-success" onclick="exportReport()"><i class="fas fa-file-excel"></i> تصدير تقرير Excel</button>
-                        <button class="btn btn-primary" onclick="exportBackup()"><i class="fas fa-database"></i> نسخ احتياطي</button>
-                        <button class="btn btn-warning" onclick="importBackup()"><i class="fas fa-upload"></i> استعادة نسخة</button>
+                    
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>البرنامج</th>
+                                    <th>العميل</th>
+                                    <th>نوع الاشتراك</th>
+                                    <th>مفتاح الترخيص</th>
+                                    <th>الأجهزة</th>
+                                    <th>التاريخ</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="softwareList"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Settings Page -->
+            <!-- ============================================ -->
+<!-- صفحة عرض وإدارة الأجهزة + توليد كود لجهاز موجود -->
+<!-- ============================================ -->
+<div id="devicesPage" class="hidden">
+    
+    <!-- بطاقة إدارة الأجهزة -->
+    <div class="content-card">
+        <div class="card-header">
+            <h3><i class="fas fa-microchip"></i> إدارة الأجهزة</h3>
+            <input type="text" class="form-control" id="searchDevice" placeholder="🔍 بحث في الأجهزة..." style="width: 250px;" oninput="renderDevices()">
+        </div>
+        
+        <div class="table-responsive">
+            <table id="devicesTable">
+                <thead>
+                    <tr>
+                        <th>معرف الجهاز</th>
+                        <th>البرنامج</th>
+                        <th>العميل</th>
+                        <th>الحالة</th>
+                        <th>تاريخ التفعيل</th>
+                        <th>تاريخ الانتهاء</th>
+                        <th>آخر ظهور</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="devicesList">
+                    <tr><td colspan="8" style="text-align: center;">جاري التحميل...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- بطاقة توليد كود تفعيل لجهاز جديد (بدون إنشاء برنامج) -->
+    <!-- ============================================ -->
+    <div class="content-card" style="margin-top: 25px;">
+        <div class="card-header">
+            <h3><i class="fas fa-qrcode"></i> 🔑 توليد كود تفعيل لجهاز جديد</h3>
+            <span style="color: #94a3b8; font-size: 12px;">
+                <i class="fas fa-info-circle"></i> يتم إنشاء كود خاص بالجهاز فقط
+            </span>
+        </div>
+        
+        <div style="max-width: 550px;">
+            <!-- اختيار البرنامج -->
+            <div class="form-group">
+                <label>📋 اختر البرنامج</label>
+                <select class="form-control" id="existingSoftwareSelect" onchange="onSoftwareSelect()">
+                    <option value="">-- اختر برنامج --</option>
+                </select>
+                <small style="color: #94a3b8;">💡 اختر البرنامج المراد إضافة جهاز إليه</small>
+            </div>
+            
+            <!-- عرض معلومات البرنامج المختار -->
+            <div id="selectedSoftwareInfo" style="background: rgba(16, 185, 129, 0.1); border-radius: 12px; padding: 12px; margin-bottom: 15px; display: none;">
+                <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div><i class="fas fa-tag"></i> <strong>البرنامج:</strong> <span id="infoSoftwareName">-</span></div>
+                    <div><i class="fas fa-user"></i> <strong>العميل:</strong> <span id="infoClientName">-</span></div>
+                    <div><i class="fas fa-calendar"></i> <strong>نوع الاشتراك:</strong> <span id="infoSubscriptionType">-</span></div>
+                </div>
+            </div>
+            
+            <!-- معرف الجهاز -->
+            <div class="form-group">
+                <label>🖥️ معرف الجهاز (Device ID)</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" class="form-control" id="existingDeviceId" placeholder="أدخل Device ID الخاص بالجهاز" style="flex: 1; font-family: monospace;">
+                    <button type="button" class="btn btn-outline" onclick="pasteFromClipboard()" style="padding: 0 15px;" title="لصق من الحافظة">
+                        <i class="fas fa-paste"></i>
+                    </button>
+                </div>
+                <small style="color: #94a3b8;">
+                    💡 يمكنك الحصول على هذا المعرف من صفحة التفعيل في برنامج العميل
+                    <br>
+                    صيغة المعرف: <code style="background: #1e293b; padding: 2px 6px; border-radius: 4px;">DEV-XXXXXXXX</code> أو <code style="background: #1e293b; padding: 2px 6px; border-radius: 4px;">HID-XXXXXXXX</code>
+                </small>
+            </div>
+            
+            <!-- صلاحية إضافية (اختيارية) -->
+            <div class="form-group">
+                <label>⏰ صلاحية إضافية (أيام) - اختياري</label>
+                <input type="number" class="form-control" id="extraExpiryDays" placeholder="اتركه فارغاً لاستخدام صلاحية البرنامج الأصلية" value="">
+                <small style="color: #94a3b8;">💡 إذا أردت صلاحية مختلفة عن صلاحية البرنامج الأصلية</small>
+            </div>
+            
+            <button class="btn btn-primary" onclick="generateCodeForExistingDevice()" style="width: 100%;" id="generateCodeBtn">
+                <i class="fas fa-key"></i> توليد كود التفعيل للجهاز
+            </button>
+        </div>
+    </div>
+    
+    <!-- ============================================ -->
+    <!-- بطاقة إحصائيات الأجهزة                        -->
+    <!-- ============================================ -->
+    <div class="stats-grid" style="margin-top: 25px;">
+        <div class="stat-card">
+            <div class="stat-value" id="devicesStatTotal">0</div>
+            <div class="stat-label">إجمالي الأجهزة</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="devicesStatActive">0</div>
+            <div class="stat-label">أجهزة نشطة</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="devicesStatSuspended">0</div>
+            <div class="stat-label">موقوفة</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="devicesStatExpiring">0</div>
+            <div class="stat-label">تنتهي قريباً (7 أيام)</div>
+        </div>
+    </div>
+</div>
+
+            <!-- ============================================ -->
+            <!-- صفحة الإعدادات                                -->
+            <!-- ============================================ -->
+            
             <div id="settingsPage" class="hidden">
                 <div class="content-card">
-                    <div class="card-header"><h3><i class="fas fa-cog"></i> إعدادات الدخول</h3></div>
+                    <div class="card-header">
+                        <h3><i class="fas fa-cog"></i> إعدادات الدخول</h3>
+                    </div>
+                    
                     <div style="max-width: 500px;">
-                        <div class="form-group"><label>👤 اسم المستخدم الجديد</label><input type="text" class="form-control" id="newUsername" placeholder="أدخل اسم المستخدم الجديد"></div>
-                        <div class="form-group"><label>🔒 كلمة المرور الجديدة</label><div class="password-wrapper"><input type="password" class="form-control" id="newPassword" placeholder="أدخل كلمة المرور الجديدة"><button class="toggle-password" onclick="togglePassword('newPassword', this)"><i class="fas fa-eye"></i></button></div></div>
-                        <div class="form-group"><label>🔒 تأكيد كلمة المرور</label><div class="password-wrapper"><input type="password" class="form-control" id="confirmPassword" placeholder="أعد إدخال كلمة المرور"><button class="toggle-password" onclick="togglePassword('confirmPassword', this)"><i class="fas fa-eye"></i></button></div></div>
-                        <button class="btn btn-primary" onclick="changeCredentials()" style="width:100%"><i class="fas fa-save"></i> حفظ التغييرات</button>
-                        <hr style="margin: 25px 0; border-color: rgba(255,255,255,0.1);">
-                        <button class="btn btn-danger" onclick="resetAllData()" style="width:100%"><i class="fas fa-trash-alt"></i> حذف جميع البيانات (إعادة تعيين)</button>
+                        <div class="form-group">
+                            <label>👤 اسم المستخدم الجديد</label>
+                            <input type="text" class="form-control" id="newUsername" placeholder="أدخل اسم المستخدم الجديد">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>🔒 كلمة المرور الجديدة</label>
+                            <input type="password" class="form-control" id="newPassword" placeholder="أدخل كلمة المرور الجديدة">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>🔒 تأكيد كلمة المرور</label>
+                            <input type="password" class="form-control" id="confirmPassword" placeholder="أعد إدخال كلمة المرور">
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="changeCredentials()" style="width: 100%;">
+                            <i class="fas fa-save"></i> حفظ التغييرات
+                        </button>
+                        
+                        <hr style="margin: 25px 0; border-color: rgba(255, 255, 255, 0.1);">
+                        
+                        <button class="btn btn-danger" onclick="resetAllData()" style="width: 100%;">
+                            <i class="fas fa-trash-alt"></i> حذف جميع البيانات (إعادة تعيين)
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div id="customModal" class="modal"><div class="modal-content"><div class="modal-header"><h3 id="modalTitle"></h3><button class="modal-close" onclick="closeModal('customModal')">&times;</button></div><div id="modalBody"></div><button class="btn btn-primary" style="margin-top:20px;width:100%" onclick="closeModal('customModal')">إغلاق</button></div></div>
+    <!-- ============================================ -->
+    <!-- النوافذ المنبثقة (مودال)                     -->
+    <!-- ============================================ -->
+    
+    <!-- مودال عرض الكود -->
+    <div id="codeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-key"></i> كود التفعيل</h3>
+                <button class="modal-close" onclick="closeModal('codeModal')">&times;</button>
+            </div>
+            <div id="codeModalContent"></div>
+            <button class="btn btn-primary" onclick="copyCode()" style="margin-top: 20px; width: 100%;">
+                <i class="fas fa-copy"></i> نسخ الكود
+            </button>
+        </div>
+    </div>
+
+    <!-- مودال إيقاف البرنامج (نسخة تجريبية) -->
+    <div id="suspendModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-pause-circle"></i> إيقاف البرنامج مؤقتاً</h3>
+                <button class="modal-close" onclick="closeModal('suspendModal')">&times;</button>
+            </div>
+            <div id="suspendModalContent"></div>
+        </div>
+    </div>
+
+    <!-- مودال حذف البرنامج نهائياً -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-trash-alt"></i> حذف البرنامج نهائياً</h3>
+                <button class="modal-close" onclick="closeModal('deleteModal')">&times;</button>
+            </div>
+            <div id="deleteModalContent"></div>
+        </div>
+    </div>
+
+    <!-- مودال عام -->
+    <div id="customModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle"></h3>
+                <button class="modal-close" onclick="closeModal('customModal')">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+            <button class="btn btn-primary" onclick="closeModal('customModal')" style="margin-top: 20px; width: 100%;">
+                إغلاق
+            </button>
+        </div>
+    </div>
 
     <script>
-        // Firebase Config
+        // ============================================ //
+        // إعدادات Firebase                              //
+        // ============================================ //
+        
         const firebaseConfig = {
             apiKey: "AIzaSyDLndo0o-Bf67Sw8_n84pM-__ErB3SuTx4",
             authDomain: "tecno-shark.firebaseapp.com",
@@ -786,53 +1134,79 @@
             appId: "1:536495831614:web:e113969218666828496f6f"
         };
 
+        // تهيئة Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
+        // ============================================ //
+        // المتغيرات العامة                              //
+        // ============================================ //
+        
         let adminUsername = "tecnoshark";
         let adminPassword = "tecno01144";
         let allSoftware = [];
         let allDevices = [];
         let currentCode = '';
+        let currentActionDevice = null;
         let statusChart = null;
         let activityChart = null;
 
-        // Toast Notification
+        // ============================================ //
+        // دوال الإشعارات (Toast)                        //
+        // ============================================ //
+        
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', warning: 'fa-triangle-exclamation', info: 'fa-info-circle' };
-            toast.innerHTML = `<i class="fas ${icons[type]}"></i> ${message}`;
+            
+            let icon = 'fa-check-circle';
+            if (type === 'error') icon = 'fa-exclamation-circle';
+            if (type === 'warning') icon = 'fa-exclamation-triangle';
+            if (type === 'info') icon = 'fa-info-circle';
+            
+            toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
             container.appendChild(toast);
-            setTimeout(() => { toast.style.animation = 'slideOut 0.3s ease'; setTimeout(() => toast.remove(), 300); }, 3000);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
+        // ============================================ //
+        // دوال النوافذ المنبثقة (Modal)                 //
+        // ============================================ //
+        
         function showModal(title, content) {
             document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalBody').innerHTML = typeof content === 'string' ? content : `<div class="code-display">${content}</div>`;
+            document.getElementById('modalBody').innerHTML = content;
             document.getElementById('customModal').style.display = 'flex';
         }
 
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        function togglePassword(inputId, btn) {
-            const input = document.getElementById(inputId);
-            if (input.type === 'password') { input.type = 'text'; btn.innerHTML = '<i class="fas fa-eye-slash"></i>'; }
-            else { input.type = 'password'; btn.innerHTML = '<i class="fas fa-eye"></i>'; }
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
 
+        // ============================================ //
+        // دوال تسجيل الدخول والإعدادات                  //
+        // ============================================ //
+        
         function handleLogin() {
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
+            
             if (username === adminUsername && password === adminPassword) {
                 document.getElementById('loginPage').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
                 document.getElementById('currentUser').innerText = username;
+                
                 loadData();
                 showPage('dashboardPage');
                 showToast('تم تسجيل الدخول بنجاح', 'success');
-            } else { showToast('اسم المستخدم أو كلمة المرور غير صحيحة', 'error'); }
+            } else {
+                showToast('اسم المستخدم أو كلمة المرور غير صحيحة', 'error');
+            }
         }
 
         function logout() {
@@ -847,184 +1221,928 @@
             const newUsername = document.getElementById('newUsername').value.trim();
             const newPassword = document.getElementById('newPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-            if (newUsername) adminUsername = newUsername;
+            
+            if (newUsername) {
+                adminUsername = newUsername;
+            }
+            
             if (newPassword) {
-                if (newPassword !== confirmPassword) { showToast('كلمة المرور وتأكيدها غير متطابقين', 'error'); return; }
+                if (newPassword !== confirmPassword) {
+                    showToast('كلمة المرور وتأكيدها غير متطابقين', 'error');
+                    return;
+                }
                 adminPassword = newPassword;
             }
+            
+            // حفظ في localStorage
             localStorage.setItem('adminUsername', adminUsername);
             localStorage.setItem('adminPassword', adminPassword);
+            
+            // تفريغ الحقول
             document.getElementById('newUsername').value = '';
             document.getElementById('newPassword').value = '';
             document.getElementById('confirmPassword').value = '';
+            
             showToast('تم تحديث بيانات الدخول بنجاح', 'success');
         }
 
-        function generateLicenseKey() { return 'TS-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase(); }
-
-        async function createSoftware() {
-            const name = document.getElementById('softwareName').value.trim();
-            const desc = document.getElementById('softwareDesc').value;
-            const clientName = document.getElementById('clientName').value.trim();
-            const deviceId = document.getElementById('deviceIdInput').value.trim();
-            const expiryDays = parseInt(document.getElementById('expiryDays').value);
-
-            if (!name) { showToast('يرجى إدخال اسم البرنامج', 'error'); return; }
-            if (!clientName) { showToast('يرجى إدخال اسم العميل', 'error'); return; }
-
-            const licenseKey = generateLicenseKey();
-            const now = new Date().toISOString();
-            let expiryDate = null;
-            if (expiryDays && !isNaN(expiryDays)) { const d = new Date(); d.setDate(d.getDate() + expiryDays); expiryDate = d.toISOString(); }
-
-            try {
-                await database.ref(`software/${licenseKey}`).set({ name, description: desc, clientName, licenseKey, createdAt: now });
-                await database.ref(`licenses/${licenseKey}`).set({ createdAt: now, devices: {} });
-                if (deviceId) {
-                    await database.ref(`licenses/${licenseKey}/devices/${deviceId}`).set({ deviceId, status: 'active', firstSeen: now, lastSeen: now, expiryDate });
-                }
-                currentCode = licenseKey;
-                showModal('كود التفعيل', `
-                    <p style="margin-bottom:15px">كود التفعيل لبرنامج <strong>${name}</strong> (العميل: ${clientName}):</p>
-                    <div class="code-display">${licenseKey}</div>
-                    <button class="btn btn-primary" style="margin-top:15px;width:100%" onclick="copyCode()"><i class="fas fa-copy"></i> نسخ الكود</button>
-                `);
-                document.getElementById('softwareName').value = '';
-                document.getElementById('softwareDesc').value = '';
-                document.getElementById('clientName').value = '';
-                document.getElementById('deviceIdInput').value = '';
-                await loadData();
-                showToast('تم إنشاء البرنامج بنجاح', 'success');
-            } catch (error) { showToast('خطأ: ' + error.message, 'error'); }
+        // ============================================ //
+        // دوال إنشاء البرنامج                           //
+        // ============================================ //
+        
+        function toggleExpiryField() {
+            const subscriptionType = document.getElementById('subscriptionType').value;
+            const expiryField = document.getElementById('expiryField');
+            
+            if (subscriptionType === 'temporary') {
+                expiryField.style.display = 'block';
+            } else {
+                expiryField.style.display = 'none';
+            }
         }
 
-        function copyCode() { navigator.clipboard.writeText(currentCode); showToast('تم نسخ الكود', 'success'); }
+        function generateLicenseKey() {
+            const timestamp = Date.now().toString(36).toUpperCase();
+            const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+            return 'TS-' + timestamp + '-' + random;
+        }
+
+        async function createSoftware() {
+    const name = document.getElementById('softwareName').value.trim();
+    const desc = document.getElementById('softwareDesc').value;
+    const clientName = document.getElementById('clientName').value.trim();
+    const subscriptionType = document.getElementById('subscriptionType').value;
+    const deviceId = document.getElementById('deviceIdInput').value.trim();
+    
+    let expiryDays = null;
+    let expiryDate = null;
+    
+    if (subscriptionType === 'temporary') {
+        expiryDays = parseInt(document.getElementById('expiryDays').value);
+        if (isNaN(expiryDays) || expiryDays <= 0) {
+            showToast('يرجى إدخال عدد أيام صلاحية صحيح', 'error');
+            return;
+        }
+        const date = new Date();
+        date.setDate(date.getDate() + expiryDays);
+        expiryDate = date.toISOString();
+    }
+    
+    if (!name) {
+        showToast('يرجى إدخال اسم البرنامج', 'error');
+        return;
+    }
+    
+    if (!clientName) {
+        showToast('يرجى إدخال اسم العميل', 'error');
+        return;
+    }
+    
+    // 🔐 إلزامي: يجب إدخال Device ID
+    if (!deviceId) {
+        showToast('⚠️ يجب إدخال معرف الجهاز (Device ID) لإنشاء كود خاص بالجهاز', 'error');
+        document.getElementById('deviceIdInput').focus();
+        return;
+    }
+    
+    // 🔐 التأكد من صيغة Device ID
+    if (!deviceId.startsWith('DEV-') && !deviceId.startsWith('HID-')) {
+        showToast('⚠️ معرف الجهاز غير صالح! يجب أن يبدأ بـ DEV- أو HID-', 'error');
+        return;
+    }
+    
+    const licenseKey = generateLicenseKey();
+    const now = new Date().toISOString();
+    
+    try {
+        // حفظ بيانات البرنامج مع ربط الجهاز
+        await database.ref(`software/${licenseKey}`).set({
+            name: name,
+            description: desc,
+            clientName: clientName,
+            licenseKey: licenseKey,
+            subscriptionType: subscriptionType,
+            expiryDays: expiryDays,
+            createdAt: now,
+            linkedDeviceId: deviceId,  // 🔐 ربط إلزامي بجهاز معين
+            isLinked: true
+        });
+        
+        await database.ref(`licenses/${licenseKey}`).set({
+            createdAt: now,
+            devices: {}
+        });
+        
+        // 🔐 تفعيل الجهاز المحدد فقط
+        await database.ref(`licenses/${licenseKey}/devices/${deviceId}`).set({
+            deviceId: deviceId,
+            status: 'active',
+            firstSeen: now,
+            lastSeen: now,
+            expiryDate: expiryDate,
+            subscriptionType: subscriptionType,
+            activatedBy: 'developer',
+            isLinked: true
+        });
+        
+        // 🔐 الكود الخاص (مفتاح + معرف الجهاز)
+        currentCode = `${licenseKey}|${deviceId}`;
+        
+        const modalContent = `
+            <div style="text-align: center;">
+                <div style="width: 60px; height: 60px; background: #10b98120; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                    <i class="fas fa-link" style="font-size: 28px; color: #10b981;"></i>
+                </div>
+                <p style="margin-bottom: 15px; color: #cbd5e1;">
+                    كود التفعيل الخاص بجهاز العميل
+                </p>
+                <div class="code-display" style="font-size: 13px; background: #0f0c29; padding: 15px; border-radius: 12px;">
+                    ${currentCode}
+                </div>
+                <div style="background: #1e293b; padding: 15px; border-radius: 12px; margin-top: 15px;">
+                    <p style="color: #10b981; margin-bottom: 8px;">
+                        <i class="fas fa-microchip"></i> <strong>هذا الكود مرتبط بالجهاز:</strong>
+                    </p>
+                    <code style="color: #f59e0b; font-size: 13px; background: #0f0c29; padding: 5px 10px; border-radius: 8px;">${deviceId}</code>
+                    <p style="color: #ef4444; font-size: 12px; margin-top: 12px;">
+                        <i class="fas fa-exclamation-triangle"></i> هذا الكود يعمل على هذا الجهاز فقط!
+                    </p>
+                </div>
+                <div style="background: #fef9e3; padding: 10px; border-radius: 10px; margin-top: 15px;">
+                    <p style="color: #92400e; font-size: 12px;">
+                        <i class="fas fa-info-circle"></i> أرسل هذا الكود للعميل لتفعيل جهازه
+                    </p>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('codeModalContent').innerHTML = modalContent;
+        document.getElementById('codeModal').style.display = 'flex';
+        
+        showToast(`✅ تم إنشاء كود خاص بالجهاز ${deviceId}`, 'success');
+        
+        // تفريغ الحقول
+        document.getElementById('softwareName').value = '';
+        document.getElementById('softwareDesc').value = '';
+        document.getElementById('clientName').value = '';
+        document.getElementById('deviceIdInput').value = '';
+        document.getElementById('subscriptionType').value = 'permanent';
+        document.getElementById('expiryField').style.display = 'none';
+        document.getElementById('expiryDays').value = '30';
+        
+        await loadData();
+        
+    } catch (error) {
+        console.error(error);
+        showToast('خطأ: ' + error.message, 'error');
+    }
+}
+async function validateLicenseCode(code) {
+    // الكود إما عام (مفتاح فقط) أو خاص (مفتاح|جهاز)
+    let licenseKey = code;
+    let requiredDeviceId = null;
+    
+    if (code.includes('|')) {
+        const parts = code.split('|');
+        licenseKey = parts[0];
+        requiredDeviceId = parts[1];
+    }
+    
+    const deviceId = appData.deviceId;
+    
+    // إذا كان الكود خاص بجهاز معين
+    if (requiredDeviceId) {
+        if (deviceId !== requiredDeviceId) {
+            return {
+                valid: false,
+                message: '❌ هذا الكود مرتبط بجهاز آخر! لا يمكن استخدامه على هذا الجهاز.'
+            };
+        }
+    }
+    
+    // التحقق من الترخيص في Firebase
+    const result = await checkLicenseOnline(licenseKey);
+    
+    // إذا كان الكود خاص وتأكدنا من تطابق الجهاز
+    if (requiredDeviceId && result.valid) {
+        return { valid: true, message: '✅ تم التفعيل بنجاح' };
+    }
+    
+    return result;
+}
+
+        function copyCode() {
+            navigator.clipboard.writeText(currentCode);
+            showToast('تم نسخ الكود إلى الحافظة', 'success');
+        }
+
+        // ============================================ //
+        // دوال إدارة الأجهزة                            //
+        // ============================================ //
+        
+        // فتح نافذة إيقاف البرنامج (نسخة تجريبية)
+        function openSuspendModal(licenseKey, deviceId, softwareName) {
+            currentActionDevice = { licenseKey, deviceId, softwareName };
+            
+            const modalContent = `
+                <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; background: #f59e0b20; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <i class="fas fa-pause-circle" style="font-size: 48px; color: #f59e0b;"></i>
+                    </div>
+                    <h4 style="color: white; margin-bottom: 15px;">إيقاف البرنامج مؤقتاً</h4>
+                    <p style="color: #94a3b8; margin-bottom: 20px;">
+                        سيتم إيقاف برنامج <strong>${softwareName}</strong> مؤقتاً على جهاز العميل.
+                    </p>
+                    <div class="form-group">
+                        <label>📅 عدد أيام الإيقاف (النسخة التجريبية)</label>
+                        <input type="number" class="form-control" id="suspendDays" placeholder="مثال: 7, 14, 30" value="7" min="1">
+                        <small style="color: #94a3b8;">💡 بعد انتهاء المدة، سيتم إيقاف البرنامج نهائياً لحين التفعيل</small>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="btn btn-warning" onclick="confirmSuspend()" style="flex: 1;">
+                            <i class="fas fa-pause"></i> تأكيد الإيقاف
+                        </button>
+                        <button class="btn btn-outline" onclick="closeModal('suspendModal')" style="flex: 1;">
+                            إلغاء
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('suspendModalContent').innerHTML = modalContent;
+            document.getElementById('suspendModal').style.display = 'flex';
+        }
+
+        async function confirmSuspend() {
+            const days = parseInt(document.getElementById('suspendDays').value);
+            
+            if (!days || days <= 0) {
+                showToast('يرجى إدخال عدد أيام صحيح', 'error');
+                return;
+            }
+            
+            const suspendUntil = new Date();
+            suspendUntil.setDate(suspendUntil.getDate() + days);
+            
+            try {
+                await database.ref(`licenses/${currentActionDevice.licenseKey}/devices/${currentActionDevice.deviceId}`).update({
+                    status: 'suspended',
+                    suspendUntil: suspendUntil.toISOString(),
+                    suspendDays: days,
+                    lastUpdated: new Date().toISOString()
+                });
+                
+                showToast(`✅ تم إيقاف البرنامج لمدة ${days} يوم`, 'success');
+                closeModal('suspendModal');
+                await loadData();
+                
+            } catch (error) {
+                showToast('خطأ: ' + error.message, 'error');
+            }
+        }
+
+        // فتح نافذة حذف البرنامج نهائياً
+        function openDeleteModal(licenseKey, deviceId, softwareName) {
+            currentActionDevice = { licenseKey, deviceId, softwareName };
+            
+            const modalContent = `
+                <div style="text-align: center;">
+                    <div style="width: 80px; height: 80px; background: #ef444420; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                        <i class="fas fa-trash-alt" style="font-size: 48px; color: #ef4444;"></i>
+                    </div>
+                    <h4 style="color: white; margin-bottom: 15px;">⚠️ تحذير: حذف البرنامج نهائياً</h4>
+                    <p style="color: #94a3b8; margin-bottom: 20px;">
+                        سيتم <strong>حذف البرنامج ${softwareName} نهائياً</strong> من جهاز العميل.
+                        <br>
+                        لن يتمكن العميل من استخدام البرنامج مرة أخرى إلا بعد إعادة التثبيت والتفعيل.
+                    </p>
+                    <div class="form-group">
+                        <label>📝 سبب الحذف (اختياري)</label>
+                        <textarea class="form-control" id="deleteReason" rows="3" placeholder="سبب حذف البرنامج..."></textarea>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="btn btn-danger" onclick="confirmDelete()" style="flex: 1;">
+                            <i class="fas fa-trash"></i> تأكيد الحذف النهائي
+                        </button>
+                        <button class="btn btn-outline" onclick="closeModal('deleteModal')" style="flex: 1;">
+                            إلغاء
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('deleteModalContent').innerHTML = modalContent;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        async function confirmDelete() {
+            const reason = document.getElementById('deleteReason')?.value || 'بدون سبب';
+            
+            try {
+                // تغيير حالة الجهاز إلى deleted
+                await database.ref(`licenses/${currentActionDevice.licenseKey}/devices/${currentActionDevice.deviceId}`).update({
+                    status: 'deleted',
+                    deletedReason: reason,
+                    deletedAt: new Date().toISOString(),
+                    lastUpdated: new Date().toISOString()
+                });
+                
+                showToast(`✅ تم حذف البرنامج ${currentActionDevice.softwareName} نهائياً`, 'warning');
+                closeModal('deleteModal');
+                await loadData();
+                
+            } catch (error) {
+                showToast('خطأ: ' + error.message, 'error');
+            }
+        }
 
         async function changeDeviceStatus(licenseKey, deviceId, newStatus) {
+            let confirmMessage = '';
+            
+            if (newStatus === 'active') {
+                confirmMessage = '✅ هل تريد تفعيل هذا الجهاز؟';
+            } else if (newStatus === 'suspended') {
+                openSuspendModal(licenseKey, deviceId, 'البرنامج');
+                return;
+            } else if (newStatus === 'deleted') {
+                openDeleteModal(licenseKey, deviceId, 'البرنامج');
+                return;
+            }
+            
+            if (!confirm(confirmMessage)) return;
+            
             try {
-                await database.ref(`licenses/${licenseKey}/devices/${deviceId}`).update({ status: newStatus, lastUpdated: new Date().toISOString() });
-                showToast(`تم تغيير حالة الجهاز إلى ${newStatus === 'active' ? 'نشط' : newStatus === 'suspended' ? 'موقوف' : 'محظور'}`, 'success');
+                await database.ref(`licenses/${licenseKey}/devices/${deviceId}`).update({
+                    status: newStatus,
+                    lastUpdated: new Date().toISOString()
+                });
+                
+                showToast(`تم تغيير حالة الجهاز`, 'success');
                 await loadData();
-            } catch (error) { showToast('خطأ: ' + error.message, 'error'); }
+                
+            } catch (error) {
+                showToast('خطأ: ' + error.message, 'error');
+            }
         }
 
         async function deleteSoftware(licenseKey) {
-            if (!confirm('⚠️ تحذير: حذف البرنامج سيؤدي إلى حذف جميع الأجهزة المرتبطة!')) return;
+            if (!confirm('⚠️ تحذير: حذف البرنامج سيؤدي إلى حذف جميع الأجهزة المرتبطة! متأكد؟')) return;
+            
             try {
                 await database.ref(`software/${licenseKey}`).remove();
                 await database.ref(`licenses/${licenseKey}`).remove();
-                await loadData();
                 showToast('تم حذف البرنامج', 'success');
-            } catch (error) { showToast('خطأ: ' + error.message, 'error'); }
+                await loadData();
+                
+            } catch (error) {
+                showToast('خطأ: ' + error.message, 'error');
+            }
         }
 
+        // ============================================ //
+        // دوال تحميل وعرض البيانات                      //
+        // ============================================ //
+        
         async function loadData() {
-            const softwareSnap = await database.ref('software').once('value');
-            allSoftware = []; for (const [k, v] of Object.entries(softwareSnap.val() || {})) allSoftware.push({ licenseKey: k, ...v });
-
-            const licensesSnap = await database.ref('licenses').once('value');
-            allDevices = [];
-            for (const [licenseKey, license] of Object.entries(licensesSnap.val() || {})) {
-                if (license.devices) {
-                    const software = allSoftware.find(s => s.licenseKey === licenseKey);
-                    for (const [deviceId, device] of Object.entries(license.devices)) {
-                        allDevices.push({ licenseKey, softwareName: software?.name || 'غير معروف', clientName: software?.clientName || '-', deviceId, ...device });
+            try {
+                // تحميل البرامج
+                const softwareSnap = await database.ref('software').once('value');
+                const softwareData = softwareSnap.val();
+                allSoftware = [];
+                
+                if (softwareData) {
+                    for (const [key, value] of Object.entries(softwareData)) {
+                        allSoftware.push({
+                            licenseKey: key,
+                            ...value
+                        });
                     }
                 }
+                
+                // تحميل الأجهزة
+                const licensesSnap = await database.ref('licenses').once('value');
+                const licensesData = licensesSnap.val();
+                allDevices = [];
+                
+                if (licensesData) {
+                    for (const [licenseKey, license] of Object.entries(licensesData)) {
+                        if (license.devices) {
+                            const software = allSoftware.find(s => s.licenseKey === licenseKey);
+                            for (const [deviceId, device] of Object.entries(license.devices)) {
+                                allDevices.push({
+                                    licenseKey: licenseKey,
+                                    softwareName: software?.name || 'غير معروف',
+                                    clientName: software?.clientName || '-',
+                                    subscriptionType: software?.subscriptionType || 'permanent',
+                                    deviceId: deviceId,
+                                    ...device
+                                });
+                            }
+                        }
+                    }
+                }
+                
+                // تحديث الإحصائيات
+                document.getElementById('statSoftware').innerText = allSoftware.length;
+                document.getElementById('statDevices').innerText = allDevices.length;
+                
+                const activeCount = allDevices.filter(d => d.status === 'active').length;
+                const suspendedCount = allDevices.filter(d => d.status === 'suspended').length;
+                
+                document.getElementById('statActive').innerText = activeCount;
+                document.getElementById('statSuspended').innerText = suspendedCount;
+                
+                document.getElementById('reportTotalSoftware').innerText = allSoftware.length;
+                document.getElementById('reportTotalDevices').innerText = allDevices.length;
+                
+                const activeRate = allDevices.length ? ((activeCount / allDevices.length) * 100).toFixed(1) : 0;
+                document.getElementById('reportActiveRate').innerText = activeRate + '%';
+                
+                // تحديث الجداول
+                renderSoftware();
+                renderDevices();
+                updateCharts();
+                
+            } catch (error) {
+                console.error(error);
+                showToast('خطأ في تحميل البيانات', 'error');
             }
-
-            document.getElementById('statSoftware').innerText = allSoftware.length;
-            document.getElementById('statDevices').innerText = allDevices.length;
-            document.getElementById('statActive').innerText = allDevices.filter(d => d.status === 'active').length;
-            document.getElementById('statSuspended').innerText = allDevices.filter(d => d.status === 'suspended').length;
-            document.getElementById('reportTotalSoftware').innerText = allSoftware.length;
-            document.getElementById('reportTotalDevices').innerText = allDevices.length;
-            const activeRate = allDevices.length ? ((allDevices.filter(d => d.status === 'active').length / allDevices.length) * 100).toFixed(1) : 0;
-            document.getElementById('reportActiveRate').innerText = activeRate + '%';
-
-            renderSoftware();
-            renderDevices();
-            updateCharts();
         }
 
         function renderSoftware() {
-            const search = document.getElementById('searchSoftware')?.value.toLowerCase() || '';
-            let filtered = allSoftware.filter(s => s.name?.toLowerCase().includes(search) || s.clientName?.toLowerCase().includes(search));
-            const tbody = document.getElementById('softwareList');
-            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">لا توجد برامج</td></tr>'; return; }
-            tbody.innerHTML = filtered.map(s => `
-                <tr><td><strong>${s.name}</strong><br><small>${s.description || ''}</small></td><td>${s.clientName || '-'}</td><td><code style="font-size:11px">${s.licenseKey}</code></td><td>${allDevices.filter(d => d.licenseKey === s.licenseKey).length}</td><td>${new Date(s.createdAt).toLocaleDateString('ar-EG')}</td><td><button class="btn btn-danger" style="padding:5px 10px" onclick="deleteSoftware('${s.licenseKey}')"><i class="fas fa-trash"></i> حذف</button></td></tr>
-            `).join('');
+    const searchTerm = document.getElementById('searchSoftware')?.value.toLowerCase() || '';
+    let filtered = allSoftware;
+    
+    if (searchTerm) {
+        filtered = allSoftware.filter(s => 
+            s.name?.toLowerCase().includes(searchTerm) || 
+            s.clientName?.toLowerCase().includes(searchTerm) ||
+            s.licenseKey?.toLowerCase().includes(searchTerm)
+        );
+    }
+    
+    const tbody = document.getElementById('softwareList');
+    
+    if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align: center;">لا توجد برامج مسجلة</td></tr>';
+        return;
+    }
+    
+    let html = '';
+    
+    for (const s of filtered) {
+        const devicesCount = allDevices.filter(d => d.licenseKey === s.licenseKey).length;
+        const createdDate = s.createdAt ? new Date(s.createdAt).toLocaleDateString('ar-EG') : '-';
+        const subscriptionText = s.subscriptionType === 'permanent' ? '♾️ دائم' : '⏰ ' + s.expiryDays + ' يوم';
+        const linkedDevice = s.linkedDeviceId || 'غير مرتبط';
+        
+        html += `
+            <tr>
+                <td><strong>${s.name}</strong><br><small style="color: #94a3b8;">${s.description || ''}</small></td>
+                <td>${s.clientName || '-'}</td>
+                <td><span class="status-badge status-active">${subscriptionText}</span></td>
+                <td><code style="font-size: 10px;">${s.licenseKey}</code></td>
+                <td><code style="font-size: 11px; color: #10b981;">🔒 ${linkedDevice}</code></td>
+                <td>${devicesCount} جهاز</td>
+                <td>${createdDate}</td>
+                <td>
+                    <button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteSoftware('${s.licenseKey}')">
+                        <i class="fas fa-trash"></i> حذف
+                    </button>
+                 </td>
+            </tr>
+        `;
+    }
+    
+    tbody.innerHTML = html;
+}
+async function generateCodeForExistingDevice() {
+    const softwareKey = document.getElementById('existingSoftwareSelect')?.value;
+    const deviceId = document.getElementById('existingDeviceId')?.value.trim();
+    
+    if (!softwareKey) {
+        showToast('يرجى اختيار البرنامج', 'error');
+        return;
+    }
+    
+    if (!deviceId) {
+        showToast('يرجى إدخال معرف الجهاز', 'error');
+        return;
+    }
+    
+    const software = allSoftware.find(s => s.licenseKey === softwareKey);
+    if (!software) {
+        showToast('البرنامج غير موجود', 'error');
+        return;
+    }
+    
+    try {
+        // التحقق من أن الجهاز غير مفعل بالفعل
+        const deviceRef = database.ref(`licenses/${softwareKey}/devices/${deviceId}`);
+        const snapshot = await deviceRef.once('value');
+        
+        if (snapshot.exists()) {
+            showToast('⚠️ هذا الجهاز مفعل بالفعل!', 'warning');
+            return;
         }
+        
+        const now = new Date().toISOString();
+        let expiryDate = null;
+        
+        if (software.subscriptionType === 'temporary' && software.expiryDays) {
+            const date = new Date();
+            date.setDate(date.getDate() + software.expiryDays);
+            expiryDate = date.toISOString();
+        }
+        
+        await deviceRef.set({
+            deviceId: deviceId,
+            status: 'active',
+            firstSeen: now,
+            lastSeen: now,
+            expiryDate: expiryDate,
+            subscriptionType: software.subscriptionType,
+            activatedBy: 'developer',
+            isLinked: true
+        });
+        
+        // تحديث البرنامج بربط الجهاز
+        await database.ref(`software/${softwareKey}`).update({
+            linkedDeviceId: deviceId,
+            isLinked: true
+        });
+        
+        currentCode = `${softwareKey}|${deviceId}`;
+        
+        showModal('كود التفعيل', `
+            <div class="code-display" style="font-size: 13px;">${currentCode}</div>
+            <p style="margin-top: 15px; color: #10b981;">
+                <i class="fas fa-microchip"></i> مرتبط بالجهاز: ${deviceId}
+            </p>
+            <p style="color: #ef4444; font-size: 12px;">⚠️ هذا الكود يعمل على هذا الجهاز فقط!</p>
+        `);
+        
+        showToast(`✅ تم إنشاء كود خاص للجهاز ${deviceId}`, 'success');
+        await loadData();
+        
+    } catch (error) {
+        showToast('خطأ: ' + error.message, 'error');
+    }
+}
+function fillSoftwareSelect() {
+    const select = document.getElementById('existingSoftwareSelect');
+    if (!select) return;
+    
+    select.innerHTML = '<option value="">-- اختر برنامج --</option>';
+    allSoftware.forEach(software => {
+        const option = document.createElement('option');
+        option.value = software.licenseKey;
+        option.textContent = `${software.name} (${software.clientName || 'بدون عميل'})`;
+        select.appendChild(option);
+    });
+}
+
+// استدعاء الدالة بعد تحميل البيانات
+// أضف fillSoftwareSelect() في نهاية loadData()
 
         function renderDevices() {
-            const search = document.getElementById('searchDevice')?.value.toLowerCase() || '';
-            let filtered = allDevices.filter(d => d.deviceId?.toLowerCase().includes(search) || d.softwareName?.toLowerCase().includes(search));
+            const searchTerm = document.getElementById('searchDevice')?.value.toLowerCase() || '';
+            let filtered = allDevices;
+            
+            if (searchTerm) {
+                filtered = allDevices.filter(d => 
+                    d.deviceId?.toLowerCase().includes(searchTerm) || 
+                    d.softwareName?.toLowerCase().includes(searchTerm) ||
+                    d.clientName?.toLowerCase().includes(searchTerm)
+                );
+            }
+            
             const tbody = document.getElementById('devicesList');
-            if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center">لا توجد أجهزة</td></tr>'; return; }
-            tbody.innerHTML = filtered.map(d => {
-                const statusClass = `status-${d.status || 'pending'}`;
-                const statusText = { active: 'نشط', suspended: 'موقوف', deleted: 'محظور' }[d.status] || d.status;
-                const expiry = d.expiryDate ? new Date(d.expiryDate).toLocaleDateString('ar-EG') : 'دائم';
-                return `<tr><td><code>${d.deviceId}</code></td><td>${d.softwareName}</td><td>${d.clientName}</td><td><span class="status-badge ${statusClass}">${statusText}</span></td><td>${expiry}</td><td>
-                    <button class="btn btn-success" style="padding:5px 8px" onclick="changeDeviceStatus('${d.licenseKey}', '${d.deviceId}', 'active')"><i class="fas fa-check"></i> تفعيل</button>
-                    <button class="btn btn-warning" style="padding:5px 8px" onclick="changeDeviceStatus('${d.licenseKey}', '${d.deviceId}', 'suspended')"><i class="fas fa-pause"></i> إيقاف</button>
-                    <button class="btn btn-danger" style="padding:5px 8px" onclick="changeDeviceStatus('${d.licenseKey}', '${d.deviceId}', 'deleted')"><i class="fas fa-ban"></i> حظر</button>
-                </td></tr>`;
-            }).join('');
+            
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">لا توجد أجهزة مسجلة</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            
+            for (const d of filtered) {
+                let statusClass = 'status-pending';
+                let statusText = 'قيد المراجعة';
+                
+                if (d.status === 'active') {
+                    statusClass = 'status-active';
+                    statusText = 'نشط';
+                } else if (d.status === 'suspended') {
+                    statusClass = 'status-suspended';
+                    statusText = 'موقوف';
+                } else if (d.status === 'deleted') {
+                    statusClass = 'status-deleted';
+                    statusText = 'محظور';
+                }
+                
+                let expiryText = 'دائم';
+                if (d.expiryDate) {
+                    expiryText = new Date(d.expiryDate).toLocaleDateString('ar-EG');
+                }
+                
+                html += `
+                    <tr>
+                        <td><code style="font-size: 11px;">${d.deviceId}</code></td>
+                        <td>${d.softwareName}</td>
+                        <td>${d.clientName}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>${expiryText}</td>
+                        <td class="action-buttons">
+                            <button class="btn btn-success" style="padding: 5px 8px; font-size: 11px;" onclick="changeDeviceStatus('${d.licenseKey}', '${d.deviceId}', 'active')">
+                                <i class="fas fa-check"></i> تفعيل
+                            </button>
+                            <button class="btn btn-warning" style="padding: 5px 8px; font-size: 11px;" onclick="changeDeviceStatus('${d.licenseKey}', '${d.deviceId}', 'suspended')">
+                                <i class="fas fa-pause"></i> إيقاف
+                            </button>
+                            <button class="btn btn-danger" style="padding: 5px 8px; font-size: 11px;" onclick="changeDeviceStatus('${d.licenseKey}', '${d.deviceId}', 'deleted')">
+                                <i class="fas fa-trash"></i> حذف
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            tbody.innerHTML = html;
         }
 
+        // ============================================ //
+        // الرسوم البيانية                               //
+        // ============================================ //
+        
         function updateCharts() {
             const active = allDevices.filter(d => d.status === 'active').length;
             const suspended = allDevices.filter(d => d.status === 'suspended').length;
             const deleted = allDevices.filter(d => d.status === 'deleted').length;
-            if (statusChart) statusChart.destroy();
-            const ctx = document.getElementById('statusChart').getContext('2d');
-            statusChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['نشط', 'موقوف', 'محظور'], datasets: [{ data: [active, suspended, deleted], backgroundColor: ['#10b981', '#f59e0b', '#ef4444'] }] }, options: { responsive: true, plugins: { legend: { labels: { color: 'white' } } } } });
+            const pending = allDevices.filter(d => !d.status || d.status === 'pending').length;
             
-            if (activityChart) activityChart.destroy();
+            if (statusChart) {
+                statusChart.destroy();
+            }
+            
+            const ctx1 = document.getElementById('statusChart').getContext('2d');
+            statusChart = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['نشط', 'موقوف', 'محظور', 'قيد المراجعة'],
+                    datasets: [{
+                        data: [active, suspended, deleted, pending],
+                        backgroundColor: ['#10b981', '#f59e0b', '#ef4444', '#64748b'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: 'white' }
+                        }
+                    }
+                }
+            });
+            
+            // إحصائيات النشاط لآخر 7 أيام
+            if (activityChart) {
+                activityChart.destroy();
+            }
+            
+            const last7Days = Array(7).fill(0);
+            const dayNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            
+            for (const device of allDevices) {
+                if (device.lastSeen) {
+                    const day = new Date(device.lastSeen).getDay();
+                    last7Days[day]++;
+                }
+            }
+            
             const ctx2 = document.getElementById('activityChart').getContext('2d');
-            const last7 = Array(7).fill(0);
-            allDevices.forEach(d => { if (d.lastSeen) { const day = new Date(d.lastSeen).getDay(); last7[day]++; } });
-            activityChart = new Chart(ctx2, { type: 'line', data: { labels: ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'], datasets: [{ label: 'النشاط', data: last7, borderColor: '#a855f7', backgroundColor: 'rgba(168,85,247,0.1)', fill: true }] }, options: { responsive: true, plugins: { legend: { labels: { color: 'white' } } }, scales: { y: { ticks: { color: 'white' } }, x: { ticks: { color: 'white' } } } } });
+            activityChart = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: dayNames,
+                    datasets: [{
+                        label: 'عدد الأجهزة النشطة',
+                        data: last7Days,
+                        borderColor: '#a855f7',
+                        backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: 'white' }
+                        }
+                    },
+                    scales: {
+                        y: { ticks: { color: 'white' } },
+                        x: { ticks: { color: 'white' } }
+                    }
+                }
+            });
         }
 
+        // ============================================ //
+        // دوال التقارير والنسخ الاحتياطي                //
+        // ============================================ //
+        
         function exportReport() {
-            let csv = "البرنامج,العميل,مفتاح الترخيص,تاريخ الإنشاء,عدد الأجهزة\n";
-            allSoftware.forEach(s => { csv += `${s.name},${s.clientName || '-'},${s.licenseKey},${new Date(s.createdAt).toLocaleDateString('ar-EG')},${allDevices.filter(d => d.licenseKey === s.licenseKey).length}\n`; });
-            const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `تقرير_البرامج_${Date.now()}.csv`; link.click(); URL.revokeObjectURL(link.href);
-            showToast('تم تصدير التقرير', 'success');
+            let csvContent = "اسم البرنامج,اسم العميل,نوع الاشتراك,مفتاح الترخيص,تاريخ الإنشاء,عدد الأجهزة\n";
+            
+            for (const s of allSoftware) {
+                const devicesCount = allDevices.filter(d => d.licenseKey === s.licenseKey).length;
+                const subscriptionText = s.subscriptionType === 'permanent' ? 'دائم' : s.expiryDays + ' يوم';
+                const createdDate = s.createdAt ? new Date(s.createdAt).toLocaleDateString('ar-EG') : '-';
+                
+                csvContent += `"${s.name}","${s.clientName || '-'}","${subscriptionText}","${s.licenseKey}","${createdDate}",${devicesCount}\n`;
+            }
+            
+            const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `تقرير_البرامج_${Date.now()}.csv`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+            
+            showToast('تم تصدير التقرير بنجاح', 'success');
         }
 
         function exportBackup() {
-            const data = { software: allSoftware, devices: allDevices, exportDate: new Date().toISOString() };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `backup_${Date.now()}.json`; link.click(); URL.revokeObjectURL(link.href);
+            const backupData = {
+                software: allSoftware,
+                devices: allDevices,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `backup_${Date.now()}.json`;
+            link.click();
+            URL.revokeObjectURL(link.href);
+            
             showToast('تم إنشاء النسخة الاحتياطية', 'success');
         }
 
         function importBackup() {
-            const input = document.createElement('input'); input.type = 'file'; input.accept = '.json';
-            input.onchange = e => { const file = e.target.files[0]; const reader = new FileReader(); reader.onload = async ev => { try { const data = JSON.parse(ev.target.result); showModal('استعادة البيانات', 'سيتم استعادة البيانات من النسخة الاحتياطية. هل أنت متأكد؟'); } catch(err) { showToast('ملف غير صالح', 'error'); } }; reader.readAsText(file); };
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = async function(ev) {
+                    try {
+                        const data = JSON.parse(ev.target.result);
+                        showModal('استعادة البيانات', `
+                            <p style="color: #94a3b8; margin-bottom: 15px;">
+                                تم العثور على نسخة احتياطية تحتوي على:
+                            </p>
+                            <ul style="color: #cbd5e1; margin-bottom: 20px;">
+                                <li>📦 ${data.software?.length || 0} برنامج</li>
+                                <li>🖥️ ${data.devices?.length || 0} جهاز</li>
+                                <li>📅 تاريخ التصدير: ${new Date(data.exportDate).toLocaleDateString('ar-EG')}</li>
+                            </ul>
+                            <p style="color: #f59e0b;">⚠️ تحذير: سيتم استبدال البيانات الحالية!</p>
+                            <button class="btn btn-warning" onclick="confirmImport(${JSON.stringify(data).replace(/"/g, '&quot;')})" style="width: 100%; margin-top: 15px;">
+                                تأكيد الاستعادة
+                            </button>
+                        `);
+                    } catch (err) {
+                        showToast('الملف غير صالح', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            
             input.click();
         }
 
-        function resetAllData() { if (confirm('⚠️ تحذير: سيتم حذف جميع البيانات نهائياً!')) { database.ref('software').remove(); database.ref('licenses').remove(); showToast('تم حذف جميع البيانات', 'warning'); setTimeout(() => location.reload(), 1500); } }
-
-        function showPage(pageId) {
-            document.querySelectorAll('#dashboardPage, #createPage, #softwarePage, #devicesPage, #reportsPage, #settingsPage').forEach(p => p.classList.add('hidden'));
-            document.getElementById(pageId).classList.remove('hidden');
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            event.target.classList.add('active');
-            const titles = { dashboardPage: 'الرئيسية', createPage: 'إنشاء برنامج', softwarePage: 'البرامج', devicesPage: 'الأجهزة', reportsPage: 'التقارير', settingsPage: 'الإعدادات' };
-            document.getElementById('pageTitle').innerText = titles[pageId];
+        async function confirmImport(backupData) {
+            try {
+                // حذف البيانات الحالية
+                await database.ref('software').remove();
+                await database.ref('licenses').remove();
+                
+                // إعادة إدخال البيانات
+                for (const software of backupData.software) {
+                    const key = software.licenseKey;
+                    delete software.licenseKey;
+                    await database.ref(`software/${key}`).set(software);
+                }
+                
+                for (const device of backupData.devices) {
+                    const licenseKey = device.licenseKey;
+                    const deviceId = device.deviceId;
+                    delete device.licenseKey;
+                    delete device.deviceId;
+                    await database.ref(`licenses/${licenseKey}/devices/${deviceId}`).set(device);
+                }
+                
+                showToast('تم استعادة البيانات بنجاح', 'success');
+                closeModal('customModal');
+                await loadData();
+                
+            } catch (error) {
+                showToast('خطأ في استعادة البيانات', 'error');
+            }
         }
 
-        const savedUser = localStorage.getItem('adminUsername'), savedPass = localStorage.getItem('adminPassword');
-        if (savedUser) adminUsername = savedUser;
-        if (savedPass) adminPassword = savedPass;
+        async function resetAllData() {
+            if (!confirm('⚠️ تحذير نهائي: سيتم حذف جميع البرامج والأجهزة نهائياً! متأكد؟')) return;
+            
+            try {
+                await database.ref('software').remove();
+                await database.ref('licenses').remove();
+                showToast('تم حذف جميع البيانات', 'warning');
+                setTimeout(() => location.reload(), 1500);
+            } catch (error) {
+                showToast('خطأ: ' + error.message, 'error');
+            }
+        }
+
+        // ============================================ //
+        // دوال التنقل بين الصفحات                       //
+        // ============================================ //
+        
+        function showPage(pageId) {
+            // إخفاء جميع الصفحات
+            document.getElementById('dashboardPage').classList.add('hidden');
+            document.getElementById('createPage').classList.add('hidden');
+            document.getElementById('softwarePage').classList.add('hidden');
+            document.getElementById('devicesPage').classList.add('hidden');
+            document.getElementById('reportsPage').classList.add('hidden');
+            document.getElementById('settingsPage').classList.add('hidden');
+            
+            // إظهار الصفحة المطلوبة
+            document.getElementById(pageId).classList.remove('hidden');
+            
+            // إزالة التفعيل عن جميع روابط القائمة
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // تفعيل الرابط الحالي
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // تغيير عنوان الصفحة
+            const titles = {
+                'dashboardPage': 'الرئيسية',
+                'createPage': 'إنشاء برنامج',
+                'softwarePage': 'البرامج',
+                'devicesPage': 'الأجهزة',
+                'reportsPage': 'التقارير',
+                'settingsPage': 'الإعدادات'
+            };
+            
+            document.getElementById('pageTitle').innerText = titles[pageId];
+            
+            // تحديث البيانات إذا لزم الأمر
+            if (pageId === 'softwarePage') {
+                renderSoftware();
+            }
+            if (pageId === 'devicesPage') {
+                renderDevices();
+            }
+        }
+
+        // ============================================ //
+        // تحميل البيانات المحفوظة والبدء                //
+        // ============================================ //
+        
+        // تحميل بيانات تسجيل الدخول المحفوظة
+        const savedUsername = localStorage.getItem('adminUsername');
+        const savedPassword = localStorage.getItem('adminPassword');
+        
+        if (savedUsername) adminUsername = savedUsername;
+        if (savedPassword) adminPassword = savedPassword;
+        
+        // بدء تحميل البيانات
         loadData();
+        
+        // تحديث اتصال Firebase
+        database.ref('.info/connected').on('value', (snap) => {
+            if (snap.val()) {
+                console.log('✅ متصل بقاعدة البيانات');
+            } else {
+                console.log('❌ غير متصل بقاعدة البيانات');
+                showToast('غير متصل بقاعدة البيانات', 'error');
+            }
+        });
     </script>
 </body>
 </html>
